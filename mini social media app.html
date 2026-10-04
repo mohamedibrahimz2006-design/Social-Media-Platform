@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mini Social Media</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f0f2f5;
+            margin: 0;
+        }
+
+        header {
+            background: #1877f2;
+            color: white;
+            text-align: center;
+            padding: 15px;
+        }
+
+        .container {
+            width: 500px;
+            max-width: 90%;
+            margin: 20px auto;
+        }
+
+        .box {
+            background: white;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 70px;
+            box-sizing: border-box;
+            padding: 10px;
+        }
+
+        button {
+            background: #1877f2;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            margin-top: 8px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input {
+            padding: 8px;
+            width: 65%;
+        }
+
+        .post {
+            background: white;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+        }
+
+        .comment {
+            background: #eee;
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Mini Social Media</h1>
+</header>
+
+<div class="container">
+
+    <!-- PROFILE -->
+    <div class="box">
+        <h2>My Profile</h2>
+        <p><b>John</b></p>
+        <p>Followers: <span id="followers">0</span></p>
+        <p>Following: <span id="following">0</span></p>
+    </div>
+
+    <!-- CREATE POST -->
+    <div class="box">
+        <h3>Create Post</h3>
+
+        <textarea id="postText"
+                  placeholder="What's on your mind?">
+        </textarea>
+
+        <br>
+
+        <button onclick="addPost()">Post</button>
+    </div>
+
+    <!-- USERS -->
+    <div class="box">
+        <h3>Users</h3>
+
+        <p>
+            Alice
+            <button onclick="follow()">Follow</button>
+        </p>
+    </div>
+
+    <!-- POSTS -->
+    <h2>Posts</h2>
+
+    <div id="posts"></div>
+
+</div>
+
+<script>
+
+let posts = [
+    {
+        name: "John",
+        text: "Hello! Welcome to my social media app 😊",
+        likes: 0,
+        comments: []
+    }
+];
+
+let followers = 0;
+let following = 0;
+
+
+// Display posts
+function showPosts() {
+
+    let postArea =
+        document.getElementById("posts");
+
+    postArea.innerHTML = "";
+
+    posts.forEach(function(post, index) {
+
+        let comments = "";
+
+        post.comments.forEach(function(comment) {
+
+            comments += `
+                <div class="comment">
+                    ${comment}
+                </div>
+            `;
+
+        });
+
+        postArea.innerHTML += `
+
+            <div class="post">
+
+                <h3>${post.name}</h3>
+
+                <p>${post.text}</p>
+
+                <button onclick="likePost(${index})">
+                    ❤️ Like (${post.likes})
+                </button>
+
+                <br>
+
+                <input
+                    id="comment${index}"
+                    placeholder="Write a comment..."
+                >
+
+                <button onclick="addComment(${index})">
+                    Comment
+                </button>
+
+                ${comments}
+
+            </div>
+
+        `;
+
+    });
+}
+
+
+// Add new post
+function addPost() {
+
+    let text =
+        document.getElementById("postText").value;
+
+    if (text.trim() === "") {
+
+        alert("Please write something!");
+
+        return;
+    }
+
+    posts.push({
+
+        name: "John",
+
+        text: text,
+
+        likes: 0,
+
+        comments: []
+
+    });
+
+    document.getElementById("postText").value = "";
+
+    showPosts();
+}
+
+
+// Like post
+function likePost(index) {
+
+    posts[index].likes++;
+
+    showPosts();
+}
+
+
+// Add comment
+function addComment(index) {
+
+    let input =
+        document.getElementById("comment" + index);
+
+    if (input.value.trim() === "") {
+
+        return;
+    }
+
+    posts[index].comments.push(input.value);
+
+    showPosts();
+}
+
+
+// Follow user
+function follow() {
+
+    following++;
+
+    followers++;
+
+    document.getElementById("following").innerText =
+        following;
+
+    document.getElementById("followers").innerText =
+        followers;
+}
+
+
+// Show posts when page starts
+showPosts();
+
+</script>
+
+</body>
+</html>
